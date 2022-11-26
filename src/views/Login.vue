@@ -13,5 +13,6 @@ import TheWelcome from '../components/Login.vue'
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
 }
 </style>

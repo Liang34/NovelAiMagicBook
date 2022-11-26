@@ -8,9 +8,9 @@
         注册
       </el-menu-item>
     </el-menu>
-    <el-form label-position="center" label-width="100px" :model="form" style="max-width: 460px" class="form">
+    <el-form label-position="center" label-width="100px" :model="form" style="max-width: 460px" class="form" >
       <el-form-item label="邮箱">
-        <el-input v-model="form.email" />
+        <el-input v-model="form.email" clearable/>
       </el-form-item>
       <el-form-item label="密码">
         <el-input v-model="form.password" type="password" show-password clearable />
@@ -85,7 +85,7 @@ const handleSelect = (val: string) => {
 <style scoped lang="less">
 .card {
   width: 600px;
-  height: 400px;
+  height: 350px;
 
   :global(.el-menu--horizontal) {
     display: flex;
@@ -94,7 +94,7 @@ const handleSelect = (val: string) => {
   }
 
   .form {
-    margin-top: 10px;
+    margin-top: 20px;
   }
   .btn {
     margin: 0 auto;
