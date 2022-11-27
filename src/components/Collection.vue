@@ -16,8 +16,8 @@
     <el-divider direction="vertical" style="height: 100%;" />
     <div class="right">
       <div style="font-weight: 400px; font-size: 20px">我的收藏夹</div>
-      <el-tabs class="demo-tabs" @tab-click="handleClick">
-        <el-tab-pane>
+      <el-tabs class="demo-tabs" @tab-change="handleClick" v-model="currentCollections">
+        <el-tab-pane name="1">
           <template #label>
             <span class="custom-tabs-label">
               <el-icon>
@@ -35,7 +35,7 @@
             <div v-for="o in collections" :key="o.id">{{ o.name }}</div>
           </el-card>
         </el-tab-pane>
-        <el-tab-pane>
+        <el-tab-pane name="2">
           <template #label>
             <span class="custom-tabs-label">
               <el-icon>
@@ -53,7 +53,7 @@
             <div v-for="o in collections" :key="o.id">{{ o.name }}</div>
           </el-card>
         </el-tab-pane>
-        <el-tab-pane>
+        <el-tab-pane name="3">
           <template #label>
             <span class="custom-tabs-label">
               <el-icon>
@@ -79,7 +79,7 @@
 <script lang="ts">
 import { createCollection, getCollection } from '@/http/request';
 import { DocumentAdd, Notebook } from '@element-plus/icons-vue';
-import { type TabsPaneContext, ElInput, ElRadioGroup, ElRadio, ElButton, ElDivider, ElTabs, ElTabPane, ElIcon, ElCard } from 'element-plus';
+import { ElInput, ElRadioGroup, ElRadio, ElButton, ElDivider, ElTabs, ElTabPane, ElIcon, ElCard, type TabPaneName } from 'element-plus';
 import { onMounted, reactive, ref, toRefs } from 'vue';
 export default {
   setup() {
@@ -90,6 +90,11 @@ export default {
         name: collection.value,
         collection_type: Number(collectionType.value),
       })
+      if (res.status) {
+        currentCollections.value = String(collectionType.value)
+        const res = await getCollection({ collection_type: Number(currentCollections.value) });
+        state.collections = res.collections
+      }
     }
     const state = reactive({
       collections: []
@@ -98,16 +103,16 @@ export default {
       const res = await getCollection({ collection_type: 1 });
       state.collections = res.collections
     }
-    const currentCollections = ref(1);
-    const handleClick = async (tab: TabsPaneContext, event: Event) => {
-      currentCollections.value = Number(tab.index || 0) + 1
-      const res = await getCollection({ collection_type: currentCollections.value });
+    const currentCollections = ref('1');
+    const handleClick = async (tab: TabPaneName) => {
+      const res = await getCollection({ collection_type: Number(currentCollections.value) });
       state.collections = res.collections
     }
     onMounted(getCollections);
     return {
       collection,
       collectionType,
+      currentCollections,
       handleCreateCollection,
       handleClick,
       ...toRefs(state)

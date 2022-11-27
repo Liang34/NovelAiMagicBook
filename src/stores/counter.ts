@@ -1,27 +1,33 @@
-import { ref, computed } from 'vue'
+import { ref, computed, reactive, toRefs } from 'vue'
 import { defineStore } from 'pinia'
 
-export const useCounterStore = defineStore('counter', () => {
-  const count = ref('aa, bb, cc, dd, ee, ff, gg, hh, ii, jj, kk')
-  // const doubleCount = computed(() => count.value * 2)
-  // function increment() {
-  //   count.value++
-  // }
-  const getStringType = count.value;
-  const getTagType = computed(() => {
-    return count.value.split(/[/,]/g)
+export const useAriaStore = defineStore('aria', () => {
+  const state = reactive({
+    aria: []
   })
-  const modifyTag = (str: string) => {
-    count.value = str
+  const modifyAria = (params: {}) => {
+    if(state.aria.find(item => item.id === params.id)) {
+      return
+    }
+    state.aria.push({...params, count: 1})
   }
-  return { count, getStringType, getTagType, modifyTag }
-})
-export const useCounterStore2 = defineStore('counter2', () => {
-  const count2 = ref(1)
-  const doubleCount = computed(() => count2.value * 2)
-  function increment() {
-    count2.value++
+  const deleteAria = (params: any) => {
+    state.aria = state.aria.filter(item => item.id !== params.id)
   }
-  return { count2, doubleCount, increment }
+  const addAria = (params: {}) => {
+    state.aria.forEach(item => {
+      if(item.id === params.id) {
+        item.count++
+      }
+    })
+  }
+  const subAria = (params: any) => {
+    state.aria.forEach(item => {
+      if(item.id === params.id && item.count > 1) {
+        item.count--
+      }
+    })
+  }
+  return { ...toRefs(state), modifyAria, deleteAria, addAria, subAria}
 })
 

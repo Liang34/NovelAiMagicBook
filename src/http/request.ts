@@ -37,7 +37,7 @@ export function createIncantation(params: {}) {
 }
 
 export function getIncantation(params: {}) {
-  return instance.post('/magic/v1/incantation/get', params)
+  return instance.post('/magic/v1/incantation/get', params).then(({data}) => data)
 }
 
 // 收藏夹

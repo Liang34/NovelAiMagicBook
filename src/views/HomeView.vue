@@ -3,6 +3,7 @@ import { createCollection } from '@/http/request';
 import { ref } from 'vue';
 import Collection from '@/components/Collection.vue'
 import Incantation from '@/components/Incantation.vue';
+import AriaList from '@/components/AriaList.vue'
 enum ConnlectionType {
   COLLECTION_TYPE_INCANTATION = 1, // 咒术
   COLLECTION_TYPE_CHANT = 2, // 咏唱
@@ -30,6 +31,9 @@ async function handleCreateCollection() {
       </el-tab-pane>
       <el-tab-pane label="咒术">
         <Incantation />
+      </el-tab-pane>
+      <el-tab-pane label="咏唱">
+        <AriaList />
       </el-tab-pane>
     </el-tabs>
   </main>
