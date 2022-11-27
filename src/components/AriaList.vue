@@ -1,7 +1,12 @@
 <template>
   <div class="main-aria ">
     <div class="left-aria ">
-      <!-- <div>所有咒术</div> -->
+      <Incantation :createSuccess=createSuccess />
+      <el-divider />
+      <el-radio-group v-model="collectionisplayIds" class="ml-4">
+        <el-radio v-for="item in collections" :label="item.id" size="large">{{ item.name }}</el-radio>
+      </el-radio-group>
+      <el-divider />
       <IncantationTag v-for="item in incantations" :incantation="item" @click="handleClick(item)" />
     </div>
     <el-divider direction="vertical" style="height: 100%;" />
@@ -17,16 +22,24 @@
 </template>
 
 <script lang="ts">
-import { getIncantation } from '@/http/request';
+import { getCollection, getIncantation } from '@/http/request';
 import { useAriaStore } from '@/stores/counter';
 import { computed, onMounted, reactive, ref, toRaw, toRefs } from 'vue';
 import IncantationTag from './IncantationTag.vue';
 import IncantationTagInput from './IncantationTagInput.vue';
+import Incantation from './Incantation.vue'
 export default {
   setup() {
     const state = reactive({
-      incantations: []
+      incantations: [],
+      collections: [],
     })
+    const getCollections = async () => {
+      const { collections } = await getCollection({ collection_type: 1 })
+      state.collections = collections
+    }
+    const collectionisplayIds = ref();
+    onMounted(getCollections)
     const fetchIncantation = async () => {
       const res = await getIncantation({
         collection_id: 0,
@@ -56,11 +69,16 @@ export default {
     const subIncantation  = (item: any) => {
       store.subAria(toRaw(item))
     }
+    const createSuccess = (params: any) => {
+      collectionisplayIds.value = params
+    }
     return {
+      collectionisplayIds,
       deleteIncantation,
       handleClick,
       addIncantation,
       subIncantation,
+      createSuccess,
       getAria,
       ...toRefs(state),
       inputAria
@@ -69,6 +87,7 @@ export default {
   components: {
     IncantationTag,
     IncantationTagInput,
+    Incantation,
   }
 }
 
@@ -79,21 +98,18 @@ export default {
   display: flex;
   align-items: center;
   height: 100%;
+  overflow: overlay;
 }
 
 .left-aria {
-  height: 100%;
   padding: 20px;
   flex: 1;
   display: flex;
-  align-items: center;
-  flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
 }
 
 .right-aria {
-  flex: 3;
+  flex: 1;
   height: 100%;
   padding: 20px;
   display: flex;

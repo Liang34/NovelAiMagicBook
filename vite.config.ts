@@ -12,8 +12,14 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  base: 'https://liang34.github.io/',
+  // server: {
+  //   port: 8081
+  // },
+  preview: {
+    port: 8081
+  },
   server: {
+    port: 8081,
     proxy: {
       '/api': {
         target: 'http://114.132.198.140:8000',

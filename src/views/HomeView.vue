@@ -25,14 +25,17 @@ async function handleCreateCollection() {
 
 <template>
   <main class="main">
-    <el-tabs tab-position="left" style="height: 800px; width: 100%;">
+    <el-tabs tab-position="left" style="height: 100%; width: 100%;">
       <el-tab-pane label="收藏夹">
         <Collection />
       </el-tab-pane>
       <el-tab-pane label="咒术">
-        <Incantation />
+        <AriaList />
       </el-tab-pane>
       <el-tab-pane label="咏唱">
+        <AriaList />
+      </el-tab-pane>
+      <el-tab-pane label="法典">
         <AriaList />
       </el-tab-pane>
     </el-tabs>
