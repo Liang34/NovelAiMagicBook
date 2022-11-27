@@ -3,7 +3,7 @@ import type { Form } from '@/type/constance'
 import md5 from 'md5';
 
 const instance = axios.create({
-  baseURL: '/api',
+  baseURL: 'http://114.132.198.140:8000',
   withCredentials: true
 })
 

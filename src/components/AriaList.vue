@@ -21,7 +21,7 @@ import { getIncantation } from '@/http/request';
 import { useAriaStore } from '@/stores/counter';
 import { computed, onMounted, reactive, ref, toRaw, toRefs } from 'vue';
 import IncantationTag from './IncantationTag.vue';
-import IncantationTagInput from './IncantationTagInput.vue'
+import IncantationTagInput from './IncantationTagInput.vue';
 export default {
   setup() {
     const state = reactive({
