@@ -2,7 +2,7 @@
 import { createCollection } from '@/http/request';
 import { ref } from 'vue';
 import Collection from '@/components/Collection.vue'
-import Incantation from '@/components/Incantation.vue';
+import Incantation from '@/components/NewIncantationDialog.vue';
 import AriaList from '@/components/AriaList.vue'
 enum ConnlectionType {
   COLLECTION_TYPE_INCANTATION = 1, // 咒术

@@ -1,20 +1,34 @@
 <template>
   <div class="warp">
-    <div>{{incantation.name}}({{incantation.content}})</div>
-    <div><el-icon><Star /></el-icon>{{incantation.likes}}</div>
+    <div>{{ incantation.name || 'No Name' }}</div>
+    <div style="display: flex; align-items: center;">
+      <div>
+        <el-icon>
+          <Star />
+        </el-icon>
+        {{ incantation.likes }}
+      </div>
+      <el-divider direction="vertical" />
+      <div>
+        <el-icon>
+          <Star />
+        </el-icon>
+        {{ incantation.likes }}
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
 import { toRefs } from 'vue';
 
- export default {
+export default {
   props: ['incantation'],
   setup(props, ctx) {
     return {
       ...toRefs(props.incantation)
     }
   }
- }
+}
 </script>
 <style scoped lang="less">
 .warp {

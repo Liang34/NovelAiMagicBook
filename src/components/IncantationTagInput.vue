@@ -4,7 +4,8 @@
       <el-icon @click="subIncantation(incantation)">
         <Minus />
       </el-icon>
-      {{ incantation.name }}({{ incantation.content }})
+      {{ incantation.name }}
+      <!-- {{ incantation.content }} -->
       <el-icon @click="addIncantation(incantation)" >
         <Plus />
       </el-icon>
@@ -15,13 +16,15 @@
   </div>
 </template>
 <script lang="ts">
+import { computed } from '@vue/reactivity';
+
 
 export default {
   props: ['incantation', 'deleteIncantation', 'addIncantation', 'subIncantation'],
   setup(props, ctx) {
     return {
       deleteIncantation: props.deleteIncantation,
-      incantation: props.incantation,
+      incantation: computed(() => props.incantation),
       addIncantation: props.addIncantation,
       subIncantation: props.subIncantation
     }
