@@ -20,7 +20,7 @@
       </div>
       <el-divider />
       <div style="display: flex; flex-wrap: wrap;">
-        <IncantationTag v-for="item in incantations" :incantation="item" @click="handleClick(item)" />
+        <IncantationTag v-for="item in incantations" :incantation="item" @click="handleClick(item)" :delIncantation=delIncantation />
       </div>
     </div>
     <el-divider direction="vertical" style="height: 100%;" />
@@ -31,19 +31,22 @@
           :addIncantation=addIncantation :subIncantation=subIncantation />
       </div>
       <div style="margin: 5px;">咏唱：</div>
-      <el-input v-model="inputAria" :rows="2" type="textarea" placeholder="Please input" />
+      <el-input v-model="inputAria" :rows="2" type="textarea" placeholder="Please input" ref="inputAriaRef" />
+      <el-button @click="clickCopy" text style="margin: 5px;">复制咏唱</el-button>
+      <el-button @click="clickCopy" text style="margin: 5px;">收藏咏唱</el-button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { getCollection, getIncantation } from '@/http/request';
+import { delReqIncantation, getCollection, getIncantation } from '@/http/request';
 import { useAriaStore } from '@/stores/counter';
 import { useDark } from '@vueuse/core';
+import { ElMessage } from 'element-plus';
 import { computed, onMounted, reactive, ref, toRaw, toRefs } from 'vue';
 import IncantationTag from './IncantationTag.vue';
 import IncantationTagInput from './IncantationTagInput.vue';
-import NewIncantationDialog from './NewIncantationDialog.vue'
+import NewIncantationDialog from './dialog/NewIncantationDialog.vue'
 export default {
   setup() {
     const state = reactive({
@@ -91,7 +94,6 @@ export default {
     }
     const createSuccess = (params1: any) => {
       const params = toRaw(params1)
-      console.log(params)
       if (Array.isArray(params) && params.length > 1) {
         collectionisplayIds.value = 0
         fetchIncantation(0)
@@ -105,6 +107,21 @@ export default {
       collectionisplayIds.value = ids;
       fetchIncantation(Number(ids))
     }
+    const delIncantation = async (incantation: any) => {
+      console.log(toRaw(incantation))
+      const res = await delReqIncantation({ids: [incantation.id]});
+      if(res.status === 1) {
+        ElMessage.success('删除成功')
+        fetchIncantation(Number(collectionisplayIds.value))
+      }
+      return res;
+    }
+    const inputAriaRef = ref();
+    const clickCopy = () => {
+      inputAriaRef.value.select();
+      document.execCommand("copy");
+      ElMessage.success('复制咏唱成功')
+    }
     return {
       collectionisplayIds,
       deleteIncantation,
@@ -117,7 +134,10 @@ export default {
       inputAria,
       centerDialogVisible,
       handleClose,
-      handleChangeIds
+      handleChangeIds,
+      delIncantation,
+      inputAriaRef,
+      clickCopy
     }
   },
   components: {
@@ -142,7 +162,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-wrap: wrap;
 }
 
 .select-box {

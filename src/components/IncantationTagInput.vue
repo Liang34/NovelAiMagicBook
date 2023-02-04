@@ -5,7 +5,7 @@
         <Minus />
       </el-icon>
       {{ incantation.name }}
-      <!-- {{ incantation.content }} -->
+      ({{ incantation.content }})
       <el-icon @click="addIncantation(incantation)" >
         <Plus />
       </el-icon>

@@ -39,12 +39,23 @@ export function createIncantation(params: {}) {
 export function getIncantation(params: {}) {
   return instance.post('/magic/v1/incantation/get', params).then(({data}) => data)
 }
-
+// 删除咒术
+export function delReqIncantation(params: {}) {
+  return instance.post('/magic/v1/incantation/delete', params).then(({data}) => data)
+}
 // 收藏夹
 export function createCollection(params: {}) {
-  return instance.post('/magic/v1/collection/create', params)
+  return instance.post('/magic/v1/collection/create', params).then(({data}) => data)
 }
-
+// 获取收藏夹
 export function getCollection(params: {}) {
   return instance.post('/magic/v1/collection/get', params).then(({data}) => data)
+}
+// 移除收藏夹
+export function removeCollection(params: {}) {
+  return instance.post('/magic/v1/collection/delete', params).then(({data}) => data)
+}
+// 编辑收藏夹
+export function editCollection(params: {}) {
+  return instance.post('/magic/v1/collection/ref/edit', params).then(({data}) => data)
 }

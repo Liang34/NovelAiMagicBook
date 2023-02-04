@@ -12,9 +12,7 @@ export const useAriaStore = defineStore('aria', () => {
     state.aria.push({...params, count: 1})
   }
   const deleteAria = (params: any) => {
-    console.log(params);
     state.aria = state.aria.filter(item => item.id !== params.id)
-    console.log(state.aria)
   }
   const addAria = (params: any) => {
     state.aria.forEach(item => {

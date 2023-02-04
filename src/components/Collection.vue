@@ -32,7 +32,12 @@
                 <span>咒术收藏夹</span>
               </div>
             </template>
-            <div v-for="o in collections" :key="o.id">{{ o.name }}</div>
+            <div v-for="o in collections" :key="o.id" style="display: flex; justify-content: space-between;">
+              {{ o.name }}
+              <el-icon @click="openDialog(o)">
+                <Delete />
+              </el-icon>
+            </div>
           </el-card>
         </el-tab-pane>
         <el-tab-pane name="2">
@@ -50,7 +55,12 @@
                 <span>咏唱收藏夹</span>
               </div>
             </template>
-            <div v-for="o in collections" :key="o.id">{{ o.name }}</div>
+            <div v-for="o in collections" :key="o.id" style="display: flex; justify-content: space-between;">
+              {{ o.name }}
+              <el-icon @click="openDialog(o)">
+                <Delete />
+              </el-icon>
+            </div>
           </el-card>
         </el-tab-pane>
         <el-tab-pane name="3">
@@ -68,23 +78,48 @@
                 <span>法典收藏夹</span>
               </div>
             </template>
-            <div v-for="o in collections" :key="o.id">{{ o.name }}</div>
+            <div v-for="o in collections" :key="o.id" style="display: flex; justify-content: space-between;">
+              {{ o.name }}
+              <el-icon @click="openDialog(o)">
+                <Delete />
+              </el-icon>
+            </div>
           </el-card>
         </el-tab-pane>
       </el-tabs>
     </div>
+    <el-dialog v-model="delDialog" title="注意" width="30%" align-center>
+      <span>确定移除此收藏夹吗？</span>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="delDialog = false">取消</el-button>
+          <el-button type="primary" @click="deleteCollection">
+            确定
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
   </main>
 </template>
 
 <script lang="ts">
-import { createCollection, getCollection } from '@/http/request';
+import { createCollection, getCollection, removeCollection } from '@/http/request';
 import { DocumentAdd, Notebook } from '@element-plus/icons-vue';
-import { ElInput, ElRadioGroup, ElRadio, ElButton, ElDivider, ElTabs, ElTabPane, ElIcon, ElCard, type TabPaneName } from 'element-plus';
+import { ElInput, ElRadioGroup, ElRadio, ElButton, ElDivider, ElTabs, ElTabPane, ElIcon, ElCard, type TabPaneName, ElDialog } from 'element-plus';
 import { onMounted, reactive, ref, toRefs } from 'vue';
 export default {
   setup() {
     const collection = ref()
     const collectionType = ref(0)
+    const delDialog = ref(false);
+    const comfirmDelData = ref({})
+    const openDialog = (params: any) => {
+      delDialog.value = true;
+      comfirmDelData.value = params;
+    }
+    const deleteCollection = () => {
+      removeCollection({ids: comfirmDelData.value!.id})
+    }
     async function handleCreateCollection() {
       const res = await createCollection({
         name: collection.value,
@@ -115,8 +150,10 @@ export default {
       currentCollections,
       handleCreateCollection,
       handleClick,
-      ...toRefs(state)
-
+      ...toRefs(state),
+      delDialog,
+      openDialog,
+      deleteCollection
     }
   }
 }
